@@ -1,19 +1,9 @@
          
-    <app-modal>
+    <app-modal modalId="auth">
         <p class="text-2xl font-bold" heading>Your Account</p>
-  <!-- Tabs -->
-         <ul class="flex flex-wrap mb-4">
-            <li class="flex-auto text-center">
-              <a class="block rounded py-3 px-4 transition hover:text-white text-white
-                bg-indigo-400" href="#">Login</a>
-            </li>
-            <li class="flex-auto text-center">
-              <a class="block rounded py-3 px-4 transition hover:text-indigo-400" 
-                href="#">Register</a>
-            </li>
-          </ul>
-
-          <!-- Login Form -->
+        <app-tabscontainer>
+          <app-tabs tabTitle="Login" [active]="true">
+            <!-- Login Form -->
           <form>
             <!-- Email -->
             <div class="mb-3">
@@ -38,7 +28,9 @@
               Submit
             </button>
           </form>
-          <!-- Registration Form -->
+          </app-tabs>
+          <app-tabs tabTitle="Register" [active]="false" >
+            <!-- Registration Form -->
           <form>
             <!-- Name -->
             <div class="mb-3">
@@ -93,5 +85,7 @@
               Submit
             </button>
           </form>
+          </app-tabs>
+        </app-tabscontainer>
 
         </app-modal>
