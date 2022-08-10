@@ -3,22 +3,31 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from './modal/modal.component';
 import { TabscontainerComponent } from './tabscontainer/tabscontainer.component';
 import { TabsComponent } from './tabs/tabs.component';
-
+import { InputComponent } from './input/input.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule} from 'ngx-mask';
+import { AlertComponent } from './alert/alert.component';
 
 
 @NgModule({
   declarations: [
     ModalComponent,
     TabscontainerComponent,
-    TabsComponent
+    TabsComponent,
+    InputComponent,
+    AlertComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot()
   ],
   exports:[
     ModalComponent,
     TabscontainerComponent,
-    TabsComponent
+    TabsComponent,
+    InputComponent,
+    AlertComponent
   ]
 
 })
