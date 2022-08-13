@@ -3,6 +3,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Emailtaken } from '../validators/emailtaken';
+import { RegisterValidators } from '../validators/register-validators';
 
 
 @Component({
@@ -24,7 +26,7 @@ export class RegisterComponent {
   email=new FormControl('',[
     Validators.required,
     Validators.email
-  ])
+  ],[this.emailTaken.validate])
   age=new FormControl('',[
     Validators.required,
     Validators.min(18),
@@ -48,9 +50,9 @@ export class RegisterComponent {
     password:this.password,
     confirm_password:this.confirm_password,
     mobileNumber:this.mobileNumber
-  });
+  },[RegisterValidators.match('password','confirm_password')]);
 
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService , private emailTaken:Emailtaken){}
   async register(){
     console.log("Submitting form")
     this.showAlert=true

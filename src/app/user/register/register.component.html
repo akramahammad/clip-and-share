@@ -31,7 +31,7 @@
                 <div class="mb-3">
                   <label class="inline-block mb-2">Confirm Password</label>
                   <app-input [control]="confirm_password" 
-                  type="password" placeholder="Confirm Psassword"></app-input>
+                  type="password" placeholder="Confirm Password"></app-input>
                 </div>
                 <!-- Phone Number -->
                 <div class="mb-3">
@@ -42,7 +42,7 @@
                 <button type="submit"
                   class="block w-full bg-indigo-400 text-white py-1.5 px-3 rounded transition
                     hover:bg-indigo-500 disabled:opacity-50 disabled:bg-indigo-400" 
-                    [disabled]="registerForm.invalid || inSubmission">
+                    [disabled]="registerForm.invalid || registerForm.pending || inSubmission">
                   Submit
                 </button>
               </form>
