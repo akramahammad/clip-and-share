@@ -20,9 +20,5 @@ export class NavComponent implements OnInit {
     this.modal.toggleModal('auth');
   }
 
-  async logout(event:Event){
-    event.preventDefault()
-    await this.authFb.signOut()
-  }
 
 }
