@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { title } from 'process';
+import { BehaviorSubject } from 'rxjs';
+import IClip from 'src/app/models/clip.model';
+import { ClipService } from 'src/app/services/clip.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-manage',
@@ -7,13 +12,31 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
   styleUrls: ['./manage.component.css']
 })
 export class ManageComponent implements OnInit {
-
+  clips:IClip[] =[]
+  activeClip:IClip|null = null
   order='recent'
-  constructor(private route:ActivatedRoute, private router:Router) { }
+  sort$:BehaviorSubject<string>
+  constructor(private route:ActivatedRoute, private router:Router,
+    private clipService:ClipService,
+    private modalService:ModalService) { 
+      this.sort$=new BehaviorSubject(this.order);
+    }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe( (params:Params)=>{
       this.order=params.sort==='oldest'?params.sort:'recent'
+      this.sort$.next(this.order)
+    })
+
+    this.clipService.getUserClips(this.sort$).subscribe(docs =>{
+      this.clips=[]
+
+      docs.forEach(doc =>{
+        this.clips.push({
+          ...doc.data(),
+          docId:doc.id
+        })
+      })
     })
   }
 
@@ -30,4 +53,23 @@ export class ManageComponent implements OnInit {
       )
   }
 
+  openModal(event:Event,clip:IClip){
+    event.preventDefault()
+    this.activeClip=clip
+    this.modalService.toggleModal('editClips')
+
+  }
+
+  updateClipsList(data:IClip){
+    this.clips.map(clip => {
+      if(clip.docId===data.docId) clip.title=data.title
+    })
+  }
+
+  deleteClip(event:Event,clip:IClip){
+    event.preventDefault()
+    this.clipService.deleteClip(clip)
+
+    this.clips=this.clips.filter(existingClip =>existingClip.docId!=clip.docId)
+  }
 }
