@@ -3,7 +3,13 @@
     <div class="rounded relative flex flex-col">
       <div class="font-bold mb-6">Upload Video</div>
 
-      <!-- Upload Dropbox -->
+      <ng-container *ngIf="!ffmpegService.isReady; else uploadCont">
+        <span class="material-icons text-center text-6xl p-8 animate-spin">
+          settings
+        </span>
+      </ng-container>
+      <ng-template #uploadCont>
+        <!-- Upload Dropbox -->
       <ng-container *ngIf="showUpload ; else uploadFormCtr">
         <div appEventblocker
         (dragend)="isDragOver=false"
@@ -19,9 +25,14 @@
           border-gray-400 transition duration-500 hover:text-white
           hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl">
         <h5>Drop your file here (mp4 only!)</h5>
+        <span *ngIf="ffmpegService.isRunning" 
+          class="material-icons text-center p-8 text-6xl animate-spin">
+          autorenew
+        </span>
         </div>
         <input type="file" (change)="storeFile($event)"/>
       </ng-container>
+
       <!-- Video Editor -->
       <ng-template #uploadFormCtr>
 
@@ -34,14 +45,14 @@
           <!-- Screenshots -->
           <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div class="border-8 cursor-pointer border-green-400">
-              <img src="assets/img/1.jpg">
-            </div>
-            <div class="border-8 cursor-pointer border-transparent">
-              <img src="assets/img/2.jpg">
-            </div>
-            <div class="border-8 cursor-pointer border-transparent">
-              <img src="assets/img/3.jpg">
+            <div *ngFor="let screenshot of screenshots"
+              [ngClass]="{ 
+                'border-green-400':selectedScreenshot===screenshot,
+                'border-transparent':selectedScreenshot!==screenshot
+              }"
+              (click)="selectedScreenshot=screenshot"
+              class="border-8 cursor-pointe">
+              <img [src]="screenshot | safeUrl">
             </div>
           </div>
 
@@ -60,5 +71,8 @@
           </div>
         </form>
       </ng-template>
+      </ng-template>
+      
+      
     </div>
   </section>
