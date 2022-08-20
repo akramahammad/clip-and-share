@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { switchMap , map} from 'rxjs/operators';
 import IClip from '../models/clip.model';
@@ -9,12 +10,14 @@ import IClip from '../models/clip.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ClipService {
-
+export class ClipService implements Resolve<IClip|null>{
+  isProcessing=false
   collection: AngularFirestoreCollection<IClip>
+  pageClips:IClip[]=[]
   constructor(private db:AngularFirestore,
     private auth:AngularFireAuth,
-    private storage:AngularFireStorage) {
+    private storage:AngularFireStorage,
+    private router:Router) {
     this.collection=this.db.collection('clips')
    }
 
@@ -57,6 +60,48 @@ export class ClipService {
     await clipRef.delete()
     await screenshotRef.delete()
     await this.collection.doc(clip.docId).delete()
+   }
+
+   async getClips(){
+    if(this.isProcessing){
+      return
+    }
+
+    this.isProcessing=true
+    let query=this.collection.ref.orderBy('timestamp','desc').limit(6)
+    
+    const {length}= this.pageClips
+    if(length){
+      const lastDocId=this.pageClips[length-1].docId
+      const lastDoc= await this.collection.doc(lastDocId).get().toPromise()
+      query=query.startAfter(lastDoc)
+      
+    }
+
+    const snapshot=await query.get()
+    snapshot.forEach( doc =>{
+      this.pageClips.push({
+        docId:doc.id,
+        ...doc.data()
+      })
+    })
+
+    this.isProcessing=false
+   }
+
+   resolve(route:ActivatedRouteSnapshot,state:RouterStateSnapshot){
+    return this.collection.doc(route.params.id).get()
+    .pipe(
+      map(snapshot =>{
+        const data=snapshot.data()
+        if(!data){
+          this.router.navigate(['/'])
+          return null
+        }
+        return data
+      })
+    )
+
    }
 
 }

@@ -71,4 +71,13 @@ export class ManageComponent implements OnInit {
 
     this.clips=this.clips.filter(existingClip =>existingClip.docId!=clip.docId)
   }
+
+  async copyToClipboard(event:Event,docId:string|undefined){
+    event.preventDefault()
+    if(!docId){
+      return
+    }
+    const url=`${location.origin}/clips/${docId}`
+    navigator.clipboard.writeText(url)
+  }
 }

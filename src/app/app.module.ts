@@ -11,10 +11,11 @@ import {AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { environment } from 'src/environments/environment';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-import { VideoModule } from './video/video.module';
 import { ClipComponent } from './clip/clip.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import {AngularFireStorageModule} from '@angular/fire/compat/storage';
+import { ClipslistComponent } from './clipslist/clipslist.component';
+import { FbTimestampPipe } from './pipes/fb-timestamp.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import {AngularFireStorageModule} from '@angular/fire/compat/storage';
     HomeComponent,
     AboutComponent,
     ClipComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    ClipslistComponent,
+    FbTimestampPipe
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,6 @@ import {AngularFireStorageModule} from '@angular/fire/compat/storage';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    VideoModule,
     AppRoutingModule
   ],
   providers: [],
