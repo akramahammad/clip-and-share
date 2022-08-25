@@ -1,4 +1,8 @@
 <div class="text-white text-center font-bold p-4 mb-4 rounded-md" 
-    [ngClass]="color">
+    [ngClass]="{
+        'bg-blue-400':color==='blue',
+        'bg-green-400':color==='green',
+        'bg-red-400':color==='red'
+    }">
     <ng-content></ng-content>
 </div>

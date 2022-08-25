@@ -39,7 +39,9 @@ export class LoginComponent implements OnInit {
     }
     this.alertColor='green'
     this.alertMessage='Logged in successfully!'
-    this.inSubmission=false
+    setTimeout(()=>{
+      this.inSubmission=false
+    },1000)
   }
 
 }

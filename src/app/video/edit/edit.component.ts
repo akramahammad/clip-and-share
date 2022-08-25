@@ -71,6 +71,10 @@ export class EditComponent implements OnInit, OnChanges {
       this.alertMessage='Updated clip successfully'
       setTimeout(()=>{
         this.modalService.toggleModal('editClips')
+        this.inSubmission=false
+        this.alertColor='blue'
+        this.showAlert=false
+        this.alertMessage=''
       },1000)
   }
 }
