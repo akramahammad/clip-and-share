@@ -30,7 +30,12 @@
           autorenew
         </span>
         </div>
-        <input type="file" (change)="storeFile($event)"/>
+        <p class="text-center mt-5">--- or ---</p>
+        <label class="bg-indigo-400 text-white text-center py-3 px-5 mt-5 rounded transition 
+        hover:cursor-pointer hover:bg-indigo-500">
+        <input type="file" (change)="storeFile($event)" class="hidden"/>
+        Select File
+        </label>
       </ng-container>
 
       <!-- Video Editor -->
