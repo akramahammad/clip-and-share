@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class FfmpegService {
 
   constructor() {
     this.ffmpeg=createFFmpeg({
-      corePath:"http://localhost:4200/node_modules/@ffmpeg/core/dist/ffmpeg-core.js",
+      corePath: environment.production?`https://${window.location.hostname}/node_modules/@ffmpeg/core/dist/ffmpeg-core.js`:"http://localhost:4200/node_modules/@ffmpeg/core/dist/ffmpeg-core.js",
       log:true
     });
    }

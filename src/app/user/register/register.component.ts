@@ -33,7 +33,8 @@ export class RegisterComponent {
     Validators.max(100)
   ])
   password=new FormControl('',[
-    Validators.required
+    Validators.required,
+    Validators.minLength(6)
   ])
   confirm_password=new FormControl('',[
     Validators.required
