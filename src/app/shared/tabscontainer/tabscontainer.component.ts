@@ -13,7 +13,6 @@ export class TabscontainerComponent implements AfterContentInit {
   constructor() { }
 
   ngAfterContentInit(): void {
-    console.log(this.tabs);
   }
 
 

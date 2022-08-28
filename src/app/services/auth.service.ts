@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { Observable, of } from 'rxjs';
-import {delay, filter, map, switchMap} from 'rxjs/operators';
+import {delay, filter, first, map, switchMap, tap} from 'rxjs/operators';
 import IUser from '../models/user.model';
 
 
@@ -36,8 +36,8 @@ export class AuthService {
       map(r =>this.route.firstChild),
       switchMap(r =>r?.data ?? of({}))
     )
-    .subscribe( data => {
-      this.redirect=data.authOnly ?? false
+    .subscribe( routeData => {
+      this.redirect=routeData.authOnly ?? false
     })
    }
 
@@ -68,10 +68,7 @@ export class AuthService {
   public async logout(event:Event){
     event.preventDefault()
     await this.auth.signOut()
-
-    if(this.redirect){
-      await this.router.navigateByUrl('/')
-    }
+    await this.router.navigateByUrl('/')
     
   }
 
